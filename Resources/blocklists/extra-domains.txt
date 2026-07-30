@@ -1,0 +1,36 @@
+# Extra domains beyond CleanBrowsing Adult filter.
+# One hostname per line. Lines starting with # are ignored.
+pornhub.com
+www.pornhub.com
+xvideos.com
+www.xvideos.com
+xnxx.com
+www.xnxx.com
+xhamster.com
+www.xhamster.com
+redtube.com
+www.redtube.com
+youporn.com
+www.youporn.com
+spankbang.com
+www.spankbang.com
+onlyfans.com
+www.onlyfans.com
+chaturbate.com
+www.chaturbate.com
+stripchat.com
+www.stripchat.com
+livejasmin.com
+www.livejasmin.com
+bongacams.com
+www.bongacams.com
+eporner.com
+www.eporner.com
+hqporner.com
+www.hqporner.com
+sxyprn.com
+www.sxyprn.com
+rule34.xxx
+www.rule34.xxx
+nhentai.net
+www.nhentai.net
