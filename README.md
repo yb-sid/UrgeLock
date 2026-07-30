@@ -42,6 +42,10 @@ make install      # copy to ~/Applications
 3. Click **Enable protection**
 4. Approve admin prompts if asked (hosts/DNS helpers)
 
+## Roadmap
+
+See [docs/MILESTONES.md](docs/MILESTONES.md) for done vs still-todo milestones (M0–M5).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
