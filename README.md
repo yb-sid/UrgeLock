@@ -10,6 +10,7 @@ Menu bar app. Password-locked. Hard to turn off in the heat of the moment. Not A
 - Master password (Keychain) + recovery phrase at setup
 - **Protection ON**: points your Mac’s DNS at [CleanBrowsing Adult Filter](https://cleanbrowsing.org/) (blocks adult domains for *all* browsers)
 - Optional **extra local blocklist** domains (hosts-based, applied with admin once)
+- **Block extra site…** in the menu after install — saved to Application Support; apply hosts to enforce
 - **Allowlist**: add freely; remove requires password
 - **Pause**: password + cooldown delay (default 30 minutes) before protection drops
 - **Quit app**: requires password (does not auto-disable DNS until you pause/disable)

@@ -15,6 +15,47 @@ struct PersistedState: Codable {
     var cooldownSeconds: TimeInterval
     var pauseDurationSeconds: TimeInterval
     var blockedAttemptHint: Int
+    /// True when user last applied /etc/hosts extras (so we can re-apply after edits).
+    var hostsModeEnabled: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case isSetupComplete, protectionStatus, cooldownEndsAt, pauseEndsAt
+        case cooldownSeconds, pauseDurationSeconds, blockedAttemptHint, hostsModeEnabled
+    }
+
+    init(
+        isSetupComplete: Bool,
+        protectionStatus: ProtectionStatus,
+        cooldownEndsAt: Date?,
+        pauseEndsAt: Date?,
+        cooldownSeconds: TimeInterval,
+        pauseDurationSeconds: TimeInterval,
+        blockedAttemptHint: Int,
+        hostsModeEnabled: Bool
+    ) {
+        self.isSetupComplete = isSetupComplete
+        self.protectionStatus = protectionStatus
+        self.cooldownEndsAt = cooldownEndsAt
+        self.pauseEndsAt = pauseEndsAt
+        self.cooldownSeconds = cooldownSeconds
+        self.pauseDurationSeconds = pauseDurationSeconds
+        self.blockedAttemptHint = blockedAttemptHint
+        self.hostsModeEnabled = hostsModeEnabled
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        isSetupComplete = try c.decode(Bool.self, forKey: .isSetupComplete)
+        protectionStatus = try c.decode(ProtectionStatus.self, forKey: .protectionStatus)
+        cooldownEndsAt = try c.decodeIfPresent(Date.self, forKey: .cooldownEndsAt)
+        pauseEndsAt = try c.decodeIfPresent(Date.self, forKey: .pauseEndsAt)
+        cooldownSeconds = try c.decodeIfPresent(TimeInterval.self, forKey: .cooldownSeconds)
+            ?? AppConfig.defaultCooldownSeconds
+        pauseDurationSeconds = try c.decodeIfPresent(TimeInterval.self, forKey: .pauseDurationSeconds)
+            ?? AppConfig.defaultPauseDurationSeconds
+        blockedAttemptHint = try c.decodeIfPresent(Int.self, forKey: .blockedAttemptHint) ?? 0
+        hostsModeEnabled = try c.decodeIfPresent(Bool.self, forKey: .hostsModeEnabled) ?? false
+    }
 
     static var `default`: PersistedState {
         PersistedState(
@@ -24,7 +65,8 @@ struct PersistedState: Codable {
             pauseEndsAt: nil,
             cooldownSeconds: AppConfig.defaultCooldownSeconds,
             pauseDurationSeconds: AppConfig.defaultPauseDurationSeconds,
-            blockedAttemptHint: 0
+            blockedAttemptHint: 0,
+            hostsModeEnabled: false
         )
     }
 }

@@ -35,17 +35,24 @@ final class HostsBlocklist {
         }
     }
 
-    /// Domains to sinkhole = bundled extras − allowlist (and www variants).
+    /// Bundled built-in list + user-added list (from the app UI).
+    func allConfiguredDomains() -> [String] {
+        var set = Set(loadBundledDomains())
+        for d in UserBlocklistStore.shared.domains {
+            set.insert(d)
+        }
+        return set.sorted()
+    }
+
+    /// Domains to sinkhole = (bundled + user extras) − allowlist (and www variants).
     func effectiveBlockDomains() -> [String] {
         let allow = Set(AllowlistStore.shared.domains)
         var set = Set<String>()
-        for d in loadBundledDomains() {
-            if allow.contains(d) { continue }
-            if allow.contains(d.hasPrefix("www.") ? String(d.dropFirst(4)) : d) { continue }
-            set.insert(d)
-            if !d.hasPrefix("www.") {
-                set.insert("www." + d)
-            }
+        for d in allConfiguredDomains() {
+            let bare = d.hasPrefix("www.") ? String(d.dropFirst(4)) : d
+            if allow.contains(d) || allow.contains(bare) { continue }
+            set.insert(bare)
+            set.insert("www." + bare)
         }
         return set.sorted()
     }

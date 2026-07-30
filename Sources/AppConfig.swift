@@ -23,4 +23,5 @@ enum AppConfig {
     static var stateURL: URL { supportDirectory.appendingPathComponent("state.json") }
     static var allowlistURL: URL { supportDirectory.appendingPathComponent("allowlist.json") }
     static var dnsBackupURL: URL { supportDirectory.appendingPathComponent("dns-backup.json") }
+    static var userBlocklistURL: URL { supportDirectory.appendingPathComponent("user-blocklist.json") }
 }

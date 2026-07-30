@@ -56,12 +56,23 @@ final class ProtectionController: NSObject {
             $0.protectionStatus = .on
             $0.cooldownEndsAt = nil
             $0.pauseEndsAt = nil
+            if applyHosts { $0.hostsModeEnabled = true }
         }
         if !dnsErrors.isEmpty {
             msg = (msg.map { $0 + " | " } ?? "") + "DNS warnings: \(dnsErrors.joined(separator: "; "))"
         }
         notify()
         return msg
+    }
+
+    /// Re-write /etc/hosts from current bundled + user blocklist (admin prompt).
+    func reapplyHostsBlocklist() -> String? {
+        if let err = HostsBlocklist.shared.applyWithAdmin() {
+            return err
+        }
+        StateStore.shared.update { $0.hostsModeEnabled = true }
+        notify()
+        return nil
     }
 
     /// Immediate disable — only after cooldown completes, or during setup testing.
@@ -77,6 +88,7 @@ final class ProtectionController: NSObject {
             $0.protectionStatus = .off
             $0.cooldownEndsAt = nil
             $0.pauseEndsAt = nil
+            if removeHosts { $0.hostsModeEnabled = false }
         }
         if !dnsErrors.isEmpty {
             msg = (msg.map { $0 + " | " } ?? "") + dnsErrors.joined(separator: "; ")
