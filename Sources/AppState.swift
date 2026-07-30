@@ -35,8 +35,10 @@ final class StateStore {
     private let queue = DispatchQueue(label: "app.urgelock.state")
 
     private init() {
+        let dec = JSONDecoder()
+        dec.dateDecodingStrategy = .iso8601
         if let data = try? Data(contentsOf: AppConfig.stateURL),
-           let decoded = try? JSONDecoder().decode(PersistedState.self, from: data) {
+           let decoded = try? dec.decode(PersistedState.self, from: data) {
             state = decoded
         } else {
             state = .default
@@ -61,8 +63,10 @@ final class StateStore {
 
     func reload() {
         queue.sync {
+            let dec = JSONDecoder()
+            dec.dateDecodingStrategy = .iso8601
             if let data = try? Data(contentsOf: AppConfig.stateURL),
-               let decoded = try? JSONDecoder().decode(PersistedState.self, from: data) {
+               let decoded = try? dec.decode(PersistedState.self, from: data) {
                 state = decoded
             }
         }
