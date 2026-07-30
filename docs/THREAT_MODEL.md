@@ -16,3 +16,9 @@
 - Password hash in Keychain (never plaintext)
 - State/allowlist in `~/Library/Application Support/UrgeLock/`
 - No browsing history collection
+
+## Browser Secure DNS (DoH)
+
+Browsers may resolve names via HTTPS (Google/Cloudflare) and ignore system DNS and `/etc/hosts`.
+V0.1.3+ sinkholes common DoH hostnames when hosts mode is applied. Users should still disable
+Secure DNS in the browser for best results.

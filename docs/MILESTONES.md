@@ -30,6 +30,7 @@ Baseline you can run daily.
 | Pause = password + cooldown + auto re-arm | ✅ |
 | Quit needs password | ✅ |
 | Makefile build + `~/Applications` install | ✅ |
+| Block common browser DoH endpoints via hosts | ✅ |
 | Open-source repo + threat model notes | ✅ |
 
 ---
