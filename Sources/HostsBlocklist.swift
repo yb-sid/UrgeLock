@@ -9,22 +9,33 @@ final class HostsBlocklist {
 
     private init() {}
 
-    func loadBundledDomains() -> [String] {
-        var urls: [URL] = []
-        if let res = Bundle.main.resourceURL?.appendingPathComponent("blocklists/extra-domains.txt") {
-            urls.append(res)
-        }
-        // Dev fallback when running from build dir
-        let dev = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-            .appendingPathComponent("Resources/blocklists/extra-domains.txt")
-        urls.append(dev)
+    private var blocklistFilenames: [String] {
+        ["extra-domains.txt", "doh-endpoints.txt"]
+    }
 
-        for url in urls {
-            if let text = try? String(contentsOf: url, encoding: .utf8) {
-                return parseDomainList(text)
+    /// Built-in adult extras + DoH/Secure-DNS endpoints (so browsers cannot bypass hosts).
+    func loadBundledDomains() -> [String] {
+        var set = Set<String>()
+        for name in blocklistFilenames {
+            for url in candidateURLs(for: name) {
+                if let text = try? String(contentsOf: url, encoding: .utf8) {
+                    for d in parseDomainList(text) { set.insert(d) }
+                    break
+                }
             }
         }
-        return []
+        return set.sorted()
+    }
+
+    private func candidateURLs(for filename: String) -> [URL] {
+        var urls: [URL] = []
+        if let res = Bundle.main.resourceURL?.appendingPathComponent("blocklists/\(filename)") {
+            urls.append(res)
+        }
+        let dev = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent("Resources/blocklists/\(filename)")
+        urls.append(dev)
+        return urls
     }
 
     func parseDomainList(_ text: String) -> [String] {

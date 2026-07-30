@@ -213,6 +213,10 @@ final class StatusBarController: NSObject {
         } else {
             message += "\n\nEnable protection + hosts (or Apply hosts) to enforce it system-wide."
         }
+        message += """
+
+Important: If the site still loads in Brave/Chrome, turn OFF Secure DNS / Use secure DNS in the browser. Those modes bypass /etc/hosts. UrgeLock also blocks common DoH endpoints when hosts is applied.
+"""
 
         Dialogs.alert(title: "Blocked site saved", message: message)
         rebuildMenu()
